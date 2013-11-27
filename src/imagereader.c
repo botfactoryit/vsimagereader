@@ -225,7 +225,7 @@ static void VS_CC
 create_reader(const VSMap *in, VSMap *out, void *user_data, VSCore *core,
               const VSAPI *vsapi)
 {
-    const char *filter_name = (const char *)user_data;
+    const char *filter_name = "Read";
     char msg_buff[256] = { 0 };
     sprintf(msg_buff, "%s: ", filter_name);
     char *msg = msg_buff + strlen(msg_buff);
