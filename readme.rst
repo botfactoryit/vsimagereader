@@ -98,7 +98,7 @@ How to compile:
 
     If you have already installed them, type as follows.::
 
-    $ git clone git://github.com/chikuzen/vsimagereader.git
+    $ git clone git://github.com/botfactoryit/vsimagereader.git
     $ cd ./vsimagereader/src
     $ ./configure --enable-new-png
     $ make
