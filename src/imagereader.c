@@ -109,6 +109,9 @@ close_handler(void *instance_data, VSCore *core, const VSAPI *vsapi)
     }
     ih->tjhandle = NULL;
     if (ih->src) {
+        int i;
+        for (i = 0; i < ih->vi[0].numFrames; ++i)
+            free(ih->src[i].name);
         free(ih->src);
         ih->src = NULL;
     }
@@ -257,9 +260,11 @@ create_reader(const VSMap *in, VSMap *out, void *user_data, VSCore *core,
 
     vs_args_t va = {in, out, core, vsapi, 0, 0, 0, 0, 0};
     for (int i = 0; i < num_srcs; i++) {
-        ih->src[i].name = vsapi->propGetData(in, "files", i, &err);
-        RET_IF_ERR(err || strlen(ih->src[i].name) == 0,
-                   "zero length file name was found");
+        const char *name = vsapi->propGetData(in, "files", i, &err);
+        RET_IF_ERR(err || strlen(name) == 0,
+                  "zero length file name was found");
+        ih->src[i].name = malloc(strlen(name) + 1);
+        strcpy(ih->src[i].name, name);
         const char *cs = check_src_props(ih, i, &va);
         RET_IF_ERR(cs, "file %d: %s", i, cs);
     }
